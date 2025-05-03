@@ -72,6 +72,8 @@ ui.menu = {
     sc_pr_margin = 8,
     rep_font_size = 0.6,
     rep_line_height = 20,
+    keyboard_line_height = 30,
+    keyboard_color = { 150, 150, 150 },
 }
 
 function ui.DrawMenu(title, text, pos, x, y, alpha, timer, shake, align)
