@@ -299,13 +299,13 @@ function lstg_ui:reloadUI()
     local pool = GetResourceStatus() or "global"
     SetResourceStatus("global")
     if self.type == 1 then
-        LoadImageFromFile("logo", "THlib/UI/logo.png")
-        SetImageCenter("logo", 0, 0)
+        --[[LoadImageFromFile("logo", "THlib/UI/logo.png")
+        SetImageCenter("logo", 0, 0)--]]
         LoadImageFromFile("ui_bg", "THlib/UI/ui_bg.png")
         LoadImageFromFile("menu_bg", "THlib/UI/menu_bg.png")
     elseif self.type == 2 then
-        LoadImageFromFile("logo", "THlib/UI/logo.png")
-        SetImageCenter("logo", 0, 0)
+        --[[LoadImageFromFile("logo", "THlib/UI/logo.png")
+        SetImageCenter("logo", 0, 0)--]]
         LoadImageFromFile("ui_bg", "THlib/UI/ui_bg.png")
         LoadImageFromFile("ui_bg2", "THlib/UI/ui_bg_2.png")
         LoadImageFromFile("menu_bg", "THlib/UI/menu_bg.png")
@@ -337,11 +337,11 @@ function lstg_ui:drawFrame1()
     else
         Render("ui_bg", x, y, 0, hs, vs)
     end
-    if CheckRes("img", "image:LOGO_img") then
+    --[[if CheckRes("img", "image:LOGO_img") then
         Render("image:LOGO_img", -16 + w.scrr, 150, 0, 0.5, 0.5)
     else
         Render("logo", -16 + w.scrr, 150, 0, 0.5, 0.5)
-    end
+    end--]]
     SetFontState("menu", "", Color(0xFFFFFFFF))
     RenderText("menu",
             string.format("%.1ffps", GetFPS()),

@@ -1,10 +1,9 @@
 {
+    "vsync": false,
     "sevolume": 100,
     "last_mod": "MyProject",
     "mod": "MyProject",
-    "vsync": false,
-    "resy": 1200,
-    "windowed": true,
+    "timezone": 8,
     "keysys": {
         "menu": 27,
         "retry": 82,
@@ -22,11 +21,6 @@
         "left": 97,
         "right": 99
     },
-    "username": "Use",
-    "bgmvolume": 100,
-    "locale": "zh_cn",
-    "resx": 1600,
-    "timezone": 8,
     "keys": {
         "slow": 16,
         "shoot": 90,
@@ -36,5 +30,11 @@
         "down": 40,
         "left": 37,
         "right": 39
-    }
+    },
+    "username": "Use",
+    "bgmvolume": 100,
+    "locale": "zh_cn",
+    "windowed": true,
+    "resx": 1600,
+    "resy": 1200
 }

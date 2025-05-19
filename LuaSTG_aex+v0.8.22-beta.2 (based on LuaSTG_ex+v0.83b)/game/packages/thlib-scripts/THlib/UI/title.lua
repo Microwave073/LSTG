@@ -106,7 +106,7 @@ function stage_menu:init()
         menu.FlyIn(menu_title, 'left')
         menu.FlyOut(menu_difficulty_select, 'right')
     end })
-    menu_difficulty_select = New(simple_menu, 'Select Difficulty', menu_items)
+    menu_difficulty_select = New(simple_menu, 'Select Difficulty', menu_items)--koko
     menu_difficulty_select.pos = scoredata.difficulty_select or 1
     --
     menu_items = {}
@@ -158,7 +158,7 @@ function stage_menu:init()
         menu.FlyIn(menu_title, 'left')
         menu.FlyOut(menu_difficulty_select_pr, 'right')
     end })
-    menu_difficulty_select_pr = New(simple_menu, 'Select Difficulty', menu_items)
+    menu_difficulty_select_pr = New(simple_menu, 'Select Difficulty', menu_items)--koko
     --
     for _, sg in ipairs(stage.groups) do
         if stage.groups[sg].allow_practice then
@@ -176,7 +176,7 @@ function stage_menu:init()
                 menu.FlyIn(menu_difficulty_select_pr, 'left')
                 menu.FlyOut(menu_practice[sg], 'right')
             end })
-            menu_practice[sg] = New(simple_menu, 'Select Stage', menu_items)
+            menu_practice[sg] = New(simple_menu, 'Select Stage', menu_items)--koko
             menu_practice[sg].stage_name = {}
             for _, s in ipairs(stage.groups[sg]) do
                 if stage.stages[s].allow_practice then
@@ -266,7 +266,7 @@ function stage_menu:init()
     effect_title = New(petal_effect)
 
     task.New(self, function()
-        --延迟几帧加载bgm避免奇怪的黑块问题--然并乱，草死
+        --延迟几帧加载bgm避免奇怪的黑块问题--然并乱，草死--感觉删了会发生不好的事情，还是留着
         task.Wait(1)
         LoadMusicRecord("menu")
         PlayMusic('menu')

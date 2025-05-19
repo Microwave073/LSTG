@@ -8,14 +8,8 @@ function winter_forest_background:init()
     LoadImage('snowflakes','snowflakes',0,0,20,20)
     SetImageState('snowflakes','mul+add',Color(0xFFFFFFFF))
     
-    Set3D('eye',0,2,1)
-    Set3D('at',0,0,2)
-    Set3D('up',0,3,1)
-    Set3D('z',0.5,20)
-    Set3D('fovy',0.6)
-    Set3D('fog',1.6,2.1,Color(180,160,170,220))
-    self.yos=0
-	self.speed=0.004
+    Set3D('eye',0,2,1) Set3D('at',0,0,2) Set3D('up',0,3,1) Set3D('z',0.5,20) Set3D('fovy',0.6) Set3D('fog',1.6,2.1,Color(180,160,170,220))
+    self.yos=0 self.speed=0.004
     
     -- 初始化雪花
     self.snowflakes = {}
