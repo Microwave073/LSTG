@@ -1,4 +1,12 @@
-﻿menu = {}
+﻿LoadImageFromFile("arrow", "THlib/UI/arrow.png")
+LoadImageFromFile("sanae", "THlib/UI/sanae.png")
+LoadImageFromFile("rin", "THlib/UI/rin.png")
+LoadImageFromFile("sanae_intro", "THlib/UI/sanae_intro.png")
+LoadImageFromFile("rin_intro", "THlib/UI/rin_intro.png")
+LoadImageFromFile("mask", "THlib/UI/mask.png")
+LoadImageFromFile("menu_flowers", "THlib/UI/flower1.png")
+--给健忘症的提醒之ui模式下原点在左下角，world模式在中间
+menu = {}
 
 function menu:FlyIn(dir)
     self.alpha = 1
@@ -9,7 +17,7 @@ function menu:FlyIn(dir)
     end
     task.Clear(self)
     task.New(self, function()
-        task.MoveTo(screen.width * 0.5, self.y, 30, 2)
+        task.MoveTo(screen.width * 0.5, self.y, 20, 2)
         self.locked = false
     end)
 end
@@ -25,7 +33,7 @@ function menu:FlyOut(dir)
     if not self.locked then
         task.New(self, function()
             self.locked = true
-            task.MoveTo(x, self.y, 30, 1)
+            task.MoveTo(x, self.y, 20, 1)
         end)
     end
 end
@@ -655,7 +663,7 @@ end
 --------------------------------------------------------------------------------------------
     
 petal_effect = Class(object)
-LoadImageFromFile("menu_flowers", "THlib/UI/flower1.png")
+
 
 function petal_effect:init()
     self.layer = LAYER_BG + 1
@@ -743,7 +751,46 @@ function player_menu:frame()
         self.pos_changed = ui.menu.shake_time
     end
 end
---[[测试中的选人界面
+
+
+player_menu = Class(object)
+
+function player_menu:init(title, content, keyslot, offx)
+    simple_menu.init(self, title, content, keyslot, offx)
+    self.x = screen.width * 0.5
+    self.alpha = 0
+    self.AA = {}
+    for i = 1, #content - 1 do
+        self.AA[i] = 0
+    end
+    self.AA[1] = 1
+    self.alpha1 = 0
+end
+
+function player_menu:frame()
+    simple_menu.frame(self)
+    for i = 1, #self.AA do--透明度渐变效果，5/6这个比例越大渐变速度越快，来自yyl，能用就别动
+        if i == self.pos then
+            self.AA[i] = (self.AA[i] * 5 + 1) / 6
+        else
+            self.AA[i] = (self.AA[i] * 5 + 0) / 6
+        end
+    end
+    self.alpha1 = (self.alpha1 * 4 + self.alpha) / 5
+    if self.locked then
+        return
+    end
+    if GetLastKey() == setting.keys.left then
+        self.pos = self.pos - 1
+        PlaySound('select00', 0.3)
+        self.pos_changed = ui.menu.shake_time
+    end
+    if GetLastKey() == setting.keys.right then
+        self.pos = self.pos + 1
+        PlaySound('select00', 0.3)
+        self.pos_changed = ui.menu.shake_time
+    end
+end
 
 function player_menu:render()
     -- check alive
@@ -752,63 +799,61 @@ function player_menu:render()
         return
     end   
     SetViewMode('ui')
-    local xoffset, yoffset = 0, 40--ui模式下原点在左下角，写位置的时候注意一下
-    -- 选人界面立绘比例
-    local scalet = { { 1900, 1774 }, { 1850, 1500 }, { 1200, 1100 }, { 1200, 1200 } }
-    local yoffsett = { { 15, 5 }, { 20, 30 }, { 0, 0 }, { 20, 30 } }
-    local xoffsett_ch = { { 0, -10 }, { 0, 0 }, { 0, 0 }, { 0, 0 } }
-    local xoffsett_tx = { { 0, 0 }, { 0, 20 }, { 0, 60 }, { 0, 70 } }
-    local showSize = 240
+    local xoffset, yoffset = 0, 40
+    -- 选人界面立绘比例 
+    local yoffsett = { { 15, 5 }, { 15, 5 } }       
+    local xoffsett_ch = { { 0, -10 }, { 0, 0 } }     
+    local xoffsett_tx = { { 0, 0 }, { 0, 20 } }       
     local t = self.AA
-    SetImageState('white', '', Color(alf * 96, 0, 0, 0))
-    RenderRect('white', 0, 640, 0, 480)
-    SetImageState('player_menu_eff', 'mul+add', Color(alf * 255, 200, 200, 255))--这玩意是那个圈圈，可以换掉
-    Render('player_menu_eff', self.x, self.y, self.timer / (2 + alf * 2), 1.5 * alf, 1.5 * alf)
-    for i = 1, 4 do
+    --SetImageState('white', '', Color(var1 * 96, 0, 0, 0))背景遮罩，效果太丑被爆破
+    --RenderRect('white', 0, 640, 0, 480)
+    for i = 1, 2 do  
         local var1 = t[i] * alf
-        local color = Color(var1 * 255, var1 * 255, var1 * 255, var1 * 255)
+        local color = Color(var1 * 255, var1 * 255, var1 * 255, var1 * 255)  
         local color_n = Color(0, var1 * 255, var1 * 255, var1 * 255)
-        SetImageState('player_' .. i .. '_1', '', Color(var1 * 255, 0, 0, 0), Color(var1 * 255, 0, 0, 0),
-            Color(0, 0, 0, 0), Color(0, 0, 0, 0))
-        SetImageState('player_' .. i .. '_2', '', Color(var1 * 255, 0, 0, 0), Color(var1 * 255, 0, 0, 0),
-            Color(0, 0, 0, 0), Color(0, 0, 0, 0))
-        Render('player_' .. i .. '_1', 440 + xoffset + var1 * 60 + xoffsett_ch[i][1], 150 + yoffset + yoffsett[i][1], 0,
-            showSize / scalet[i][1], showSize / scalet[i][1])
-        Render('player_' .. i .. '_2', 200 + xoffset - var1 * 60 + xoffsett_ch[i][2], 150 + yoffset + yoffsett[i][2], 0,
-            -showSize / scalet[i][2], showSize / scalet[i][2])
-        SetImageState('player_' .. i .. '_1', '', color, color, color_n, color_n)
-        SetImageState('player_' .. i .. '_2', '', color, color, color_n, color_n)
-        Render('player_' .. i .. '_1', 440 + xoffset + var1 * 55 + xoffsett_ch[i][1], 150 + yoffset + yoffsett[i][1], 0,
-            showSize / scalet[i][1], showSize / scalet[i][1])
-        Render('player_' .. i .. '_2', 200 + xoffset - var1 * 55 + xoffsett_ch[i][2], 150 + yoffset + yoffsett[i][2], 0,
-            -showSize / scalet[i][2], showSize / scalet[i][2])
-        SetImageState('player_intro_1_' .. i, '', color)
-        SetImageState('player_intro_2_' .. i, '', color)
-        Render('player_intro_1_' .. i, 220 + xoffset - var1 * 55 + xoffsett_tx[i][1], 90 + yoffset, 0, 0.3, 0.3)
-        Render('player_intro_2_' .. i, 440 + xoffset + var1 * 55 + xoffsett_tx[i][2], 90 + yoffset, 0, 0.3, 0.3)
-        SetImageState('team_title_' .. i, '', Color(var1 * 255, var1 * 255, var1 * 255, var1 * 255))
-        Render('team_title_' .. i, self.x + xoffset, self.y + yoffset, 0, 0.3, 0.3)
+        if i == 1 then
+            SetImageState('mask', '', Color(var1 * 200 , 255 , 255 , 255))
+            Render('mask', self.x + 70 + xoffset - var1 * 55 + xoffsett_ch[i][2], self.y - 45 + yoffset + yoffsett[i][2], 0,
+                    0.5, 0.5)
+            SetImageState('rin_intro', '', Color(var1 * 255 , 255 , 255 , 255))
+            Render('rin_intro', self.x + 70 + xoffset - var1 * 55 + xoffsett_ch[i][2], self.y - 45 + yoffset + yoffsett[i][2], 0,
+                    0.5, 0.5)
+        else
+            SetImageState('mask', '', Color(var1 * 200 , 255 , 255 , 255))
+            Render('mask', self.x + 65 + xoffset - var1 * 55 + xoffsett_ch[i][2], self.y - 45 + yoffset + yoffsett[i][2], 0,
+                    0.5, 0.5)
+            SetImageState('sanae_intro', '', Color(var1 * 255 , 255 , 255 , 255))
+            Render('sanae_intro', self.x + 70 + xoffset - var1 * 55 + xoffsett_ch[i][2], self.y - 45 + yoffset + yoffsett[i][2], 0,
+                    0.5, 0.5)
+        end
     end
-    SetImageState('title_btm', '', Color(alf * 255, 255, 255, 255))
-    Render('title_btm', self.x + xoffset, self.y + 135 + alf * 20 + yoffset, 0, 0.35, 0.32)
-    SetImageState('title_3', '', Color(alf * 255, 255, 255, 255))
-    SetImageState('title_4', '', Color(alf * 255, 255, 255, 255))
-    Render('title_3', self.x + xoffset, self.y + 150 + alf * 20 + yoffset, 0, 0.35, 0.35)
-    Render('title_4', self.x + xoffset, self.y + 90 + alf * 30 + yoffset, 0, 0.35, 0.35)
-    SetImageState('title_3', 'mul+add', Color(alf * 128, 255, 255, 255))
-    SetImageState('title_4', 'mul+add', Color(alf * 128, 255, 255, 255))
-    Render('title_3', self.x + xoffset, self.y + 150 + alf * 20 + yoffset, 0, 0.35, 0.35)
-    Render('title_4', self.x + xoffset, self.y + 90 + alf * 30 + yoffset, 0, 0.35, 0.35)
-    SetImageState('option_arrow', '', Color(alf * 255, alf * 255, alf * 255, alf * 255))
-    Render('option_arrow', self.x + xoffset, self.y + yoffset + alf * 80 + sin(self.timer * 5) * 5, -90, 0.8, 0.8)
-    Render('option_arrow', self.x + xoffset, self.y + yoffset - alf * 80 - sin(self.timer * 5) * 5, 90, 0.8, -0.8)
+    SetImageState('arrow', '', Color(alf * 255, alf * 255, alf * 255, alf * 255))
+    Render('arrow', self.x + xoffset, self.y + yoffset + 150 + sin(self.timer * 5) * -5, 90, 0.8, 0.8)
+    Render('arrow', self.x + xoffset, self.y + yoffset - 230 + sin(self.timer * 5) * 5, -90, 0.8, 0.8)
 end
 
-]]
+--[[新菜单施工中
+title_menu = Class(object)
+function title_menu:init(title, content, keyslot, offx)
+    simple_menu.init(self, title, content, keyslot, offx)
+    self.x = screen.width * 0.5
+    self.alpha = 0
+    self.AA = {}
+    for i = 1, #content - 1 do
+        self.AA[i] = 0
+    end
+    self.AA[1] = 1
+    self.alpha1 = 0
+end
+function title_menu:frame()
+end
 
+function title_menu:render()
+    SetViewMode 'ui'
+end
+----------------------------------------------------
 
-
---[[测试中的难度选择界面，帕琪-san，抄袭了你的代码是我的错，但我是不会道歉的！
+--[[测试中的难度选择界面
 difficulty_menu = Class(object)
 
 function difficulty_menu:init(title, content, keyslot, offx)

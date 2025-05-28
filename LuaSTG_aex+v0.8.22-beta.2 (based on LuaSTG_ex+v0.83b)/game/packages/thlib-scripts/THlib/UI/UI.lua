@@ -468,13 +468,15 @@ end
 function lstg_ui:drawInfo1()
     local w = lstg.world
     local RenderImgList = {
-        { "line_1", 109 + w.scrr, 419, 0, 1, 1 },
+       --[[ { "line_1", 109 + w.scrr, 419, 0, 1, 1 },
         { "line_2", 109 + w.scrr, 397, 0, 1, 1 },
         { "line_3", 109 + w.scrr, 349, 0, 1, 1 },
-        { "line_4", 109 + w.scrr, 311, 0, 1, 1 },
+        
         { "line_5", 109 + w.scrr, 247, 0, 1, 1 },
         { "line_6", 109 + w.scrr, 224, 0, 1, 1 },
         { "line_7", 109 + w.scrr, 202, 0, 1, 1 },
+        --]]
+        { "line_4", 109 + w.scrr, 300, 0, 1, 1 },
         { "hint.hiscore", 12 + w.scrr, 425, 0, 1, 1 },
         { "hint.score", 12 + w.scrr, 403, 0, 1, 1 },
         { "hint.Pnumber", 12 + w.scrr, 371, 0, 1, 1 },

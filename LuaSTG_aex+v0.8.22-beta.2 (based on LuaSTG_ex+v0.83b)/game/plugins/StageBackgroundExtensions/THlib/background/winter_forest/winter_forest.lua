@@ -7,10 +7,9 @@ function winter_forest_background:init()
     LoadTexture('snowflakes','THlib/background/winter_forest/snowflakes.png')
     LoadImage('snowflakes','snowflakes',0,0,20,20)
     SetImageState('snowflakes','mul+add',Color(0xFFFFFFFF))
-    
+
     Set3D('eye',0,2,1) Set3D('at',0,0,2) Set3D('up',0,3,1) Set3D('z',0.5,20) Set3D('fovy',0.6) Set3D('fog',1.6,2.1,Color(180,160,170,220))
     self.yos=0 self.speed=0.004
-    
     -- 初始化雪花
     self.snowflakes = {}
     self.max_snowflakes = 110
@@ -28,7 +27,6 @@ function winter_forest_background:init()
             rot_speed = ran:Float(-2,2)
         })
     end
-
 end
 
 function winter_forest_background:frame()
@@ -60,7 +58,6 @@ function winter_forest_background:render()
     background.WarpEffectCapture()
     RenderClear(Color(180,200,220,255))
     
-    
     -- 渲染背景
     local y=self.yos%1
     for i=-1,5 do 
@@ -72,7 +69,6 @@ function winter_forest_background:render()
             -0.5+i2,0.5,0.5+i+y)
         end
 	end
-
 
     local view_dir = {
         x = lstg.view3d.at[1] - lstg.view3d.eye[1],
@@ -96,26 +92,22 @@ function winter_forest_background:render()
     for i=1,#self.snowflakes do
         local snow = self.snowflakes[i]
         local half_size = snow.size * 0.5
-        
         local base_z = snow.z % 1
-        
+
         for j=-1,5 do
             local pos = {
                 x = snow.x,
                 y = snow.y,
                 z = base_z + j
             }
-            
             local fog_factor = math.max(0, math.min(1, (pos.z - 2) / 4))  
             local alpha = math.floor((1 - fog_factor) * 255)
             SetImageState('snowflakes','mul+add',Color(255,255,255,255))
-            
             local angle = math.rad(snow.angle)
             local cos_a = math.cos(angle)
             local sin_a = math.sin(angle)
             local depth_scale = math.max(0.6, 1 - fog_factor * 0.4) 
             local scaled_size = half_size * depth_scale
-            
             -- 旋转计算
             local p1x = pos.x - scaled_size * cos_a
             local p1y = pos.y - scaled_size * sin_a
@@ -125,7 +117,6 @@ function winter_forest_background:render()
             local p3y = pos.y + scaled_size * sin_a
             local p4x = pos.x - scaled_size * cos_a
             local p4y = pos.y - scaled_size * sin_a
-            
             -- 渲染雪花
             Render4V('snowflakes',
                 p1x, p1y, pos.z,
@@ -135,7 +126,7 @@ function winter_forest_background:render()
             )
         end
     end
-
+    
     background.WarpEffectApply()
     SetViewMode'world'
 end

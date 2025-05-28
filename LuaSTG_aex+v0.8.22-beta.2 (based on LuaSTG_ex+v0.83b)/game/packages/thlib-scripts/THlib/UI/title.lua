@@ -141,7 +141,7 @@ function stage_menu:init()
         menu.FlyIn(last_menu, 'left')
         menu.FlyOut(menu_player_select, 'right')
     end })
-    menu_player_select = New(simple_menu, 'Select Player', menu_items)
+    menu_player_select = New(player_menu, 'Select Player', menu_items)
     menu_player_select.pos = scoredata.player_select or 1
     --
     menu_items = {}

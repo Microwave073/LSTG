@@ -175,7 +175,7 @@ function ext.pausemenu:render()
     RenderRect('white', 0, screen.width, 0, screen.height)
     --渲染底图
     SetImageState('pause_eff', '', Color(pm.mask_alph[1] / 3, 200 * self.eff / 15 + 55, 200 * (1 - self.eff / 15) + 55, 200 * (1 - self.eff / 15) + 55))
-    Render('pause_eff', -150 + 180 * self.eff / 15 + dx, -90 + dy, 4 + 4 * sin(self.timer * 3), 0.4, 0.6)
+    Render('pause_eff', dx, -90 + dy, self.timer * 1.5, 0.7, 0.7)
     --准备选项
     local pause_menu_text
     local pause_menu_choose = { 'yes', 'no' }
@@ -425,4 +425,4 @@ LoadImage('pause_Replay Again', 'pause', 0, 432, 224, 56)
 SetImageCenter('pause_Replay Again', 0, 28)
 LoadImage('pause_Continue', 'pause', 232, 432, 120, 58)
 SetImageCenter('pause_Continue', 0, 29)
-LoadImage('pause_eff', 'pause', 408, 320, 104, 384)
+LoadImage('pause_eff', 'pause', 380, 378, 300, 288)
